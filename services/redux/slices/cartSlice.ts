@@ -9,7 +9,7 @@ interface CartItem {
 }
 
 interface CartState {
-  items: CartItem[];
+  items: Record<string, any>[];
 }
 
 const initialState: CartState = {

@@ -1,7 +1,6 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "@/services/redux/store";
-import { cartActions } from "@/services/redux/slices/cartSlice";
 
 interface CartSidebarProps {
   isOpen: boolean;
@@ -10,7 +9,6 @@ interface CartSidebarProps {
 
 const CartSidebar: React.FC<CartSidebarProps> = ({ isOpen, onClose }) => {
   const cartItems = useSelector((state: RootState) => state.Cart.items);
-  const dispatch = useDispatch();
 
   const totalAmount = cartItems.reduce(
     (acc, item) => acc + item.price * item.quantity,

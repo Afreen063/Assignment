@@ -1,6 +1,15 @@
 import { cartActions } from "@/services/redux/slices/cartSlice";
+import { RootState } from "@/services/redux/store";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+
+interface CartItem {
+  id: number;
+  title: string;
+  price: number;
+  image: string;
+  quantity: number;
+}
 
 interface ProductCardProps {
   item: {
@@ -15,13 +24,15 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
   //---------------------useSelectors--------------------------
-  const totalcartItems = useSelector((state: any) => state.Cart.items);
+  const totalcartItems = useSelector(
+    (state: RootState) => state.Cart.items as CartItem[]
+  );
 
   //-------------------------------redux store-------------------------
   const dispatch = useDispatch();
 
   //----------------------useState------------------------------
-  const [cartItem, setCartItem] = useState<any>();
+  const [cartItem, setCartItem] = useState<CartItem>();
 
   //------------------------functions---------------------------------
   const handleAdd = () => {
@@ -51,7 +62,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
   useEffect(() => {
     if (totalcartItems?.length > 0) {
       const cartItem = totalcartItems?.find(
-        (product: any) => product.id === item.id
+        (product) => product.id === item.id
       );
       setCartItem(cartItem);
     }
@@ -85,7 +96,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
               {item.category}
             </span>
           </div>
-          {cartItem?.quantity > 0 ? (
+          {cartItem && cartItem?.quantity > 0 ? (
             <div className="flex justify-between items-center bg-blue-50 p-2 rounded-lg">
               <button
                 onClick={handleDecrement}
@@ -93,7 +104,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ item }) => {
               >
                 -
               </button>
-              <span className="text-md font-semibold">{cartItem.quantity}</span>
+              <span className="text-md font-semibold">
+                {cartItem?.quantity}
+              </span>
               <button
                 onClick={handleIncrement}
                 className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700"

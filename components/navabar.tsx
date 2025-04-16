@@ -3,9 +3,10 @@ import Link from "next/link";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import CartSidebar from "./cart";
+import { RootState } from "@/services/redux/store";
 
 const Navbar = () => {
-  const totalItems = useSelector((state: any) => state.Cart.items);
+  const totalItems = useSelector((state: RootState) => state.Cart.items);
 
   //-------------------------useState------------------------
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -13,7 +14,7 @@ const Navbar = () => {
   //------------------functions-----------------------
   const calculateTotalQuantity = () => {
     const total = totalItems.reduce(
-      (acc: any, item: any) => acc + item.quantity,
+      (acc: number, item) => acc + item.quantity,
       0
     );
     return total;
